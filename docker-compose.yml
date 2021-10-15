@@ -1,0 +1,35 @@
+version: "2.1"
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+    volumes:
+      - ./config:/config
+      - ./downloads:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8888:8888
+      - 8080:8080
+    restart: unless-stopped
+   
+
+  
+  nginx:
+    image: lscr.io/linuxserver/nginx
+    container_name: nginx
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./nginxconfig:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
